@@ -1,0 +1,36 @@
+.Vehicles-list {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.Vehicles-list td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.Vehicles-list tr:nth-child(even){background-color: #f2f2f2;}
+
+.Vehicles-list tr:hover{background-color: #f2f2f2;}
+
+.Vehicles-list th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(228, 223, 156);
+    color: white;   
+}
+
+.nav a {
+    border-radius: 4px;
+    padding: .72rem 1.7rem;
+    background-color: #cca353;
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color .5s;
+  }
+  
+  .nav a:hover {
+    cursor: pointer;
+    background-color: #a7874b;
+  }
