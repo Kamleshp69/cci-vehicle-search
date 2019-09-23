@@ -1,17 +1,19 @@
 import React from 'react';
 
 import './VehicleSearch.css';
+import TextSearch from '../TextSearch/TextSearch';
 const apiRootUrl = 'https://swapi.co/api/';
 
 class VehicleSearch extends React.Component {
+    
     constructor(props) {
-      super(props);
-        
+      super(props); 
       this.handleSearchChange = this.handleSearchChange.bind(this);
-      this.handlePrevClick = this.handlePrevClick(this);
-      this.handleNextClick = this.handleNextClick(this);
+      this.handlePrevClick = this.handlePrevClick.bind(this);
+      this.handleNextClick = this.handleNextClick.bind(this);
 
       this.state = {
+        currentPage : 0,
         userSearch: '',
         vehicleData : {
             count: 0,
@@ -48,7 +50,7 @@ class VehicleSearch extends React.Component {
     }
 
     refreshData(searchString) {
-        
+        searchString = searchString || '';
         fetch(apiRootUrl + 'vehicles/?search=' + searchString)
         .then(res => res.json())
         .then((data) => {
@@ -70,15 +72,9 @@ class VehicleSearch extends React.Component {
     }
 
     handleSearchChange(event) {
-        //this.setState({userSearch: e.target.value})
-        let searchValue = event.target.value;
-
-        //Only search after atleast 2 character typed
-        if (searchValue.length <2)
-            return;
-
-        this.refreshData(searchValue);
         
+        let searchValue = event;
+        this.refreshData(searchValue);
     }
     pageNavigation(pageUrl) {
         if (pageUrl === null)
@@ -94,37 +90,59 @@ class VehicleSearch extends React.Component {
         .catch(console.log);
     }
     handlePrevClick(event) {
-        //const url = this.state.vehicleData.previous;
-        //this.pageNavigation(url);
+        const url = this.state.vehicleData.previous;
+        if (url){
+            this.pageNavigation(url);
+            this.setState ({currentPage: this.state.currentPage - 1});
+        }
     }
 
     handleNextClick(event) {
-        //const url = this.state.vehicleData.next;
-        //this.pageNavigation(url);
+        const url = this.state.vehicleData.next;
+        if (url){
+            this.pageNavigation(url);
+            this.setState ({currentPage: this.state.currentPage + 1});
+        }
+    }
+    renderPageNavComments(){
+        const currentPage = this.state.currentPage;
+        const pageCount = this.state.vehicleData.count;
+        // Since the Service returns 10 records max at time, we can use 10
+        //We can also set this value in Config
+
+        let cFrom = currentPage * 10 + 1;
+        let cTo = currentPage * 10 + 10;
+        if (cTo > pageCount)
+            cTo = pageCount;
+
+        return <span>{`${cFrom} - ${cTo} of ${pageCount}`}</span>;
     }
     render() {
         return (
             <div>
                 <div className="App-search">
-                <input placeholder="Search vehicles" onChange={this.handleSearchChange} />
+                    <TextSearch placeholder="Search vehicles" onChange={this.handleSearchChange}/>
                 </div>
                 <div className="card">
                     <div className="card-body">
                         <table className="Vehicles-list">
+                            <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Cost in credits</th>
                                 <th>Length</th>
                             </tr>
+                            </thead>
+                            <tbody>
                             {this.renderTableRows()}
+                            </tbody>
                         </table>
                     </div>
                     <div className="card-footer">
                         <div className="nav">
-                            <span>Total Rows {this.state.vehicleData.count}
+                            {this.renderPageNavComments()}
                             <a onClick={this.handlePrevClick}>Previous</a>
                             <a onClick={this.handleNextClick}>Next</a>
-                            </span>
                         </div>
                     </div>
                 </div>
