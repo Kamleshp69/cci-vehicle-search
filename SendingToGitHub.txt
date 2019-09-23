@@ -1,0 +1,19 @@
+
+1) Create a empty Repository in GitHub
+
+2) Follow set of commands to push the local files to GitHub
+
+C:\Kamlesh\TechNotes\ReactJS\cci-vehicle-search>git init
+
+git config --global user.email "kamleshp70@hotmail.com"
+git config --global user.name "Kamleshp69"
+
+git remote add origin https://github.com/Kamleshp69/cci-vehicle-search.git
+
+git add --all
+
+git commit -am "Initial Creation"
+
+git remote add origin https://github.com/Kamleshp69/cci-vehicle-search.git
+
+git push -u origin master
